@@ -1,0 +1,1 @@
+Aplicacion sencilla, para la gestion de tareas sencillas, con manejo de estados, desarrollada en node y react+ ts con una base de datos implementada en postgres guardado los datos mas importantes acerca de la tarea insertada
