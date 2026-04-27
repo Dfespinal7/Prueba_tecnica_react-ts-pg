@@ -29,9 +29,10 @@ export const createTaskService = async ({ title, description, status }) => {
 }
 
 export const updateTask = async({ title, description, status },task_id) => {
-    if (!title || !description || !status) {
+    if (!title|| !status) {
         throw new Error ('PARAMS_NOT_FOUND')
     }
+    const desc = description ? description.toLowerCase() : null;
     const validTask=await pool.query('select id from tasks where id=$1',[task_id])
     if(validTask.rows.length===0){
         throw new Error ('TASK_NOT_FOUND')
@@ -40,14 +41,14 @@ export const updateTask = async({ title, description, status },task_id) => {
     if(!statusAllowed.includes(status.toLowerCase())){
         throw new Error('STATUS_NOT_VALID')
     }
-    const result=await pool.query('UPDATE tasks set title=$1,description=$2,status=$3 WHERE id=$4 RETURNING *',[title.toLowerCase(),description.toLowerCase(),status.toLowerCase(),task_id])
+    const result=await pool.query('UPDATE tasks set title=$1,description=$2,status=$3 WHERE id=$4 RETURNING *',[title.toLowerCase(),desc,status.toLowerCase(),task_id])
     return {message:'Task editado correctamente',task:result.rows[0]}
 }
 
 export const deleteAtask=async(task_id)=>{
     const validTask=await pool.query('select id from tasks where id=$1',[task_id])
     if(validTask.rows.length===0){
-        throw new Error('TASK_NOT_FOUND')
+        throw new Error ('TASK_NOT_FOUND')
     }
     const deleteRegister=await pool.query('DELETE FROM tasks where id=$1',[task_id])
     return {message:'Task eliminada correctamente'}

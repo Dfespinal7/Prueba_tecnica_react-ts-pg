@@ -30,6 +30,7 @@ export default function TaskList() {
         }
         setAllTask(data)
         setFiltrados(data)
+        setFiltroStatus('todos')
 
     }
     const handleChangheInput = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -48,6 +49,7 @@ export default function TaskList() {
             })
             return
         }
+        
         const result = await fetch('http://localhost:5000/tasks', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -121,6 +123,7 @@ export default function TaskList() {
             newStatus='pending'
         }
         const taskmod={...taskToEdit,status:newStatus}
+        console.log(taskmod)
         await fetch(`http://localhost:5000/tasks/${id}`,{
             method:'PUT',
             headers:{'Content-Type':'application/json'},
